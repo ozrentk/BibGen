@@ -57,7 +57,7 @@ namespace BibGen.App.Viewmodel
                 FilePathContent = "",
                 Filter = "Excel files (*.xlsx)|*.xlsx",
                 Title = "Select Excel file"
-            };            
+            };
 
             _backgroundImageVM = new FileBrowserVM
             {

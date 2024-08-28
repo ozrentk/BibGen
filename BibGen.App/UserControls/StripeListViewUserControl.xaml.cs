@@ -38,7 +38,7 @@ namespace BibGen.App.UserControls
 
         private void ListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (sender is ListViewItem item && 
+            if (sender is ListViewItem item &&
                 item.DataContext is StripeItemVM selectedStripe)
             {
                 if (selectedStripe == null)
@@ -46,7 +46,7 @@ namespace BibGen.App.UserControls
 
                 MyDataContext.SelectedStripeItem = selectedStripe;
 
-                foreach(var stripeItem in MyDataContext.StripeItems)
+                foreach (var stripeItem in MyDataContext.StripeItems)
                 {
                     stripeItem.IsSelected =
                         stripeItem == selectedStripe;

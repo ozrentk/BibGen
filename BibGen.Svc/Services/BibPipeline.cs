@@ -1,5 +1,4 @@
 ﻿using BibGen.Svc.Model;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using SkiaSharp;
 
 namespace BibGen.Services
@@ -34,7 +33,7 @@ namespace BibGen.Services
             int total = numberedEntries.Count;
             foreach (var entry in entries)
             {
-                if(entry.Number == 0)
+                if (entry.Number == 0)
                     continue;
 
                 var image = _imageGenerator.GenerateBibImage(entry, background, context);

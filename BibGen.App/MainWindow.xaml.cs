@@ -34,7 +34,7 @@ namespace BibGen.App
 
                     var bibEntries = bibDataLoader.LoadBibEntries(fileBrowserViewModel.FilePathContent);
                     MyDataContext.BibEntries.Clear();
-                    foreach (var bibEntry in bibEntries) 
+                    foreach (var bibEntry in bibEntries)
                     {
                         MyDataContext.BibEntries.Add(bibEntry);
                     }
@@ -46,7 +46,7 @@ namespace BibGen.App
 
         private void AddStripeExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if(e.Parameter is not StripePropertiesVM stripeProps)
+            if (e.Parameter is not StripePropertiesVM stripeProps)
                 return;
 
             MyDataContext.StripeItems.Add(new StripeItemVM

@@ -6,8 +6,8 @@ namespace BibGen.Services
     public interface IBibImageGenerator
     {
         SKBitmap GenerateBibImage(
-            BibEntry entry, 
-            SKBitmap background, 
+            BibEntry entry,
+            SKBitmap background,
             BibGenContext context);
     }
 
@@ -18,8 +18,8 @@ namespace BibGen.Services
             1 - (context.MarginStripes[0] + context.MarginStripes[2]);
 
         public SKBitmap GenerateBibImage(
-            BibEntry entry, 
-            SKBitmap background, 
+            BibEntry entry,
+            SKBitmap background,
             BibGenContext context)
         {
             var bgCopy = background.Copy();
@@ -27,7 +27,7 @@ namespace BibGen.Services
 
             var descriptors = context.LineDescriptors[entry.Lines.Length - 1];
 
-            for(int i=0; i<descriptors.Count; i++)
+            for (int i = 0; i < descriptors.Count; i++)
             {
                 var descriptor = descriptors[i];
                 var line = entry.Lines[i];
@@ -56,8 +56,8 @@ namespace BibGen.Services
                 var x = bgCopy.Width / 2;
                 var y = bgCopy.Height * (1 - descriptor.BaseDistance);
                 canvas.DrawText(
-                    line, 
-                    x, 
+                    line,
+                    x,
                     y,
                     linePaint);
 
@@ -130,10 +130,10 @@ namespace BibGen.Services
         }
 
         private SKPaint MakeSkPaint(
-            string text, 
-            SKTypeface typeface, 
-            float wishedHeightPx, 
-            out float probeWidthPx, 
+            string text,
+            SKTypeface typeface,
+            float wishedHeightPx,
+            out float probeWidthPx,
             out float probeHeightPx)
         {
             var paint = new SKPaint

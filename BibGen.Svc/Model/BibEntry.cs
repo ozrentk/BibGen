@@ -5,7 +5,7 @@ namespace BibGen.Svc.Model
 {
     public class BibEntry
     {
-        public Dictionary<string, string> DataItems { get; set; } = 
+        public Dictionary<string, string> DataItems { get; set; } =
             new Dictionary<string, string>();
 
         [Display(Name = "Dionica")]

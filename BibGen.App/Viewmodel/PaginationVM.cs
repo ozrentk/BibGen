@@ -50,7 +50,7 @@ namespace BibGen.App.Viewmodel
             CurrentItem++;
         }
 
-        private void LastPage() => 
+        private void LastPage() =>
             CurrentItem = ItemCount - 1;
     }
 }
