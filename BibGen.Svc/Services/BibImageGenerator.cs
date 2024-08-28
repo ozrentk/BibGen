@@ -1,4 +1,5 @@
 ﻿using BibGen.Svc.Model;
+using ICSharpCode.SharpZipLib.Zip;
 using SkiaSharp;
 
 namespace BibGen.Services
@@ -8,35 +9,37 @@ namespace BibGen.Services
         SKBitmap GenerateBibImage(
             BibEntry entry,
             SKBitmap background,
-            BibGenContext context);
+            List<BibLineDescriptor> lineDescriptors);
     }
 
     public class BibImageGenerator : IBibImageGenerator
     {
-        private float GetCoverage(BibGenContext context) =>
-            // margins: top, right, bottom, left
-            1 - (context.MarginStripes[0] + context.MarginStripes[2]);
+        //private float GetCoverage(BibGenContext context) =>
+        //    // margins: top, right, bottom, left
+        //    1 - (context.MarginStripes[0] + context.MarginStripes[2]);
 
         public SKBitmap GenerateBibImage(
-            BibEntry entry,
+            BibEntry bibEntry,
             SKBitmap background,
-            BibGenContext context)
+            List<BibLineDescriptor> lineDescriptors)
         {
             var bgCopy = background.Copy();
             var canvas = new SKCanvas(bgCopy);
 
-            var descriptors = context.LineDescriptors[entry.Lines.Length - 1];
-
-            for (int i = 0; i < descriptors.Count; i++)
+            for (int i = 0; i < lineDescriptors.Count; i++)
             {
-                var descriptor = descriptors[i];
-                var line = entry.Lines[i];
-                var typeface = SKTypeface.FromFile(descriptor.FontName);
+                var lineDescriptor = lineDescriptors[i];
+
+                bibEntry.DataItems.TryGetValue(lineDescriptor.ExcelColumnName, out string lineText);
+
+                //var typeface = SKTypeface.FromFile(lineDescriptor.FontName);
+                var typeface = SKTypeface.FromFamilyName(lineDescriptor.FontName);
 
                 var linePaint = MakeSkPaint(
-                    line,
+                    lineText,
                     typeface,
-                    descriptor.FontSize,
+                    lineDescriptor.FontSize,
+                    lineDescriptor.Color,
                     out float probeWidthPx,
                     out float probeHeightPx);
 
@@ -45,23 +48,22 @@ namespace BibGen.Services
                 {
                     // Preširoko - suziti
                     linePaint = MakeSkPaint(
-                        line,
+                        lineText,
                         typeface,
-                        descriptor.FontSize / ratio,
+                        lineDescriptor.FontSize / ratio,
+                        lineDescriptor.Color,
                         out probeWidthPx,
                         out probeHeightPx);
                 }
 
                 // Pozicija i crtanje broja
                 var x = bgCopy.Width / 2;
-                var y = bgCopy.Height * (1 - descriptor.BaseDistance);
+                var y = bgCopy.Height * lineDescriptor.Baseline;
                 canvas.DrawText(
-                    line,
+                    lineText,
                     x,
                     y,
                     linePaint);
-
-
             }
 
             return bgCopy;
@@ -133,6 +135,7 @@ namespace BibGen.Services
             string text,
             SKTypeface typeface,
             float wishedHeightPx,
+            string colorHex,
             out float probeWidthPx,
             out float probeHeightPx)
         {
@@ -141,7 +144,7 @@ namespace BibGen.Services
                 Typeface = typeface,
                 TextSize = wishedHeightPx,
                 IsAntialias = true,
-                Color = SKColors.Yellow,
+                Color = SKColor.Parse(colorHex),
                 TextAlign = SKTextAlign.Center
             };
 

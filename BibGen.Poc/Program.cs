@@ -28,7 +28,7 @@ bibSvc.GenerateBibs(new BibGenContext
             {
                 FontName = @"Resources\Fonts\Barlow\BarlowCondensed-Bold.otf",
                 FontSize = 300f,
-                BaseDistance = 0.25f
+                BaseDistance = 0.25f                
             },
         },
         new List<LineDescriptor> {

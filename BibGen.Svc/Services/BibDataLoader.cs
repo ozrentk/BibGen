@@ -40,8 +40,8 @@ namespace BibGen.Services
                 var headerRow = worksheet.FirstRowUsed();
 
                 // BEGIN: remove
-                var excelColMap = GetExcelColumnMap(headerRow);
-                var bibPropMap = BibEntry.GetPropertyMap();
+                //var excelColMap = GetExcelColumnMap(headerRow);
+                //var bibPropMap = BibEntry.GetPropertyMap();
                 // END: remove
 
                 foreach (var row in worksheet.RowsUsed().Skip(1))
@@ -56,22 +56,22 @@ namespace BibGen.Services
                     }
 
                     // BEGIN: remove
-                    foreach (var bibProp in bibPropMap)
-                    {
-                        if (excelColMap.TryGetValue(bibProp.Key, out var col))
-                        {
-                            var value = row.Cell(col).GetValue<string>();
-                            if (string.IsNullOrEmpty(value))
-                            {
-                                bibProp.Value.SetValue(entry, default);
-                            }
-                            else
-                            {
-                                var convertedValue = Convert.ChangeType(value, bibProp.Value.PropertyType);
-                                bibProp.Value.SetValue(entry, convertedValue);
-                            }
-                        }
-                    }
+                    //foreach (var bibProp in bibPropMap)
+                    //{
+                    //    if (excelColMap.TryGetValue(bibProp.Key, out var col))
+                    //    {
+                    //        var value = row.Cell(col).GetValue<string>();
+                    //        if (string.IsNullOrEmpty(value))
+                    //        {
+                    //            bibProp.Value.SetValue(entry, default);
+                    //        }
+                    //        else
+                    //        {
+                    //            var convertedValue = Convert.ChangeType(value, bibProp.Value.PropertyType);
+                    //            bibProp.Value.SetValue(entry, convertedValue);
+                    //        }
+                    //    }
+                    //}
                     // END: remove
 
                     entries.Add(entry);
@@ -81,15 +81,15 @@ namespace BibGen.Services
             return entries;
         }
 
-        private static Dictionary<string, int> GetExcelColumnMap(IXLRow firstRow)
-        {
-            var columnMap = new Dictionary<string, int>();
-            foreach (var cell in firstRow.CellsUsed())
-            {
-                columnMap[cell.GetString()] = cell.Address.ColumnNumber;
-            }
+        //private static Dictionary<string, int> GetExcelColumnMap(IXLRow firstRow)
+        //{
+        //    var columnMap = new Dictionary<string, int>();
+        //    foreach (var cell in firstRow.CellsUsed())
+        //    {
+        //        columnMap[cell.GetString()] = cell.Address.ColumnNumber;
+        //    }
 
-            return columnMap;
-        }
+        //    return columnMap;
+        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using BibGen.Svc.Model;
+﻿using BibGen.Services;
+using BibGen.Svc.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -105,11 +106,38 @@ namespace BibGen.App.Viewmodel
         public void ExportCurrentBib()
         {
             Debug.WriteLine($"Exporting current bib {PaginationVM.CurrentItem}");
+
+            StartExportPipeline(PaginationVM.CurrentItem);
         }
 
         public void ExportAllBibs()
         {
             Debug.WriteLine("Exporting all bibs");
+
+            StartExportPipeline();
+        }
+
+        private void StartExportPipeline(int? exportBibAt = null)
+        {
+            var pipeline = new BibPipeline(new BibDataLoader(), new BibImageGenerator(), new PdfGenerator());
+
+            var stripeItems = StripeItems.Select(s => new BibLineDescriptor
+            {
+                FontName = s.FontName,
+                FontSize = s.FontSize,
+                Color = s.Color.ToString(),
+                Baseline = (float)s.Baseline,
+                ExcelColumnName = s.ExcelColumnName
+            }).ToList();
+
+            pipeline.GenerateBibs(new BibGenContext
+            {
+                ExcelFilePath = ExcelFilePathVM.FilePathContent,
+                BackgroundFilePath = BackgroundImageVM.FilePathContent,
+                OutputFilePath = OutputFolderVM.FolderPathContent,
+                LineDescriptors = stripeItems,
+                ExportBibAt = exportBibAt
+            });
         }
     }
 }
