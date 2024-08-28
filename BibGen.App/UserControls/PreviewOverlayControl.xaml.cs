@@ -90,6 +90,9 @@ namespace BibGen.App.UserControls
 
             OverlayCanvas.Children.RemoveRange(0, OverlayCanvas.Children.Count);
 
+            if (!MyDataContext.BibEntries.Any())
+                return;
+
             foreach (var stripe in MyDataContext.StripeItems)
             {
                 var itemIdx = MyDataContext.PaginationVM.CurrentItem;
@@ -106,8 +109,10 @@ namespace BibGen.App.UserControls
 
                 textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                Canvas.SetLeft(textBlock, (ActualWidth - textBlock.DesiredSize.Width) / 2);
-                Canvas.SetTop(textBlock, (double)stripe.Baseline * this.ActualHeight);
+                var left = (ActualWidth - textBlock.DesiredSize.Width) / 2;
+                var top = -textBlock.DesiredSize.Height + (double)stripe.Baseline * this.ActualHeight;
+                Canvas.SetLeft(textBlock, left);
+                Canvas.SetTop(textBlock, top);
 
                 OverlayCanvas.Children.Add(textBlock);
             }
