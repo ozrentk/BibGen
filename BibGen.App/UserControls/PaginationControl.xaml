@@ -52,10 +52,14 @@
         <Button Content="&lt;&lt;"
                 Style="{StaticResource RoundCornerButton}"
                 Margin="5"
+                Background="#FF51759B" 
+                Foreground="White" 
                 Command="{Binding FirstPageCommand}"/>
         <Button Content="&lt;" 
                 Style="{StaticResource RoundCornerButton}"
                 Margin="5"
+                Background="#FF51759B" 
+                Foreground="White" 
                 Command="{Binding PreviousPageCommand}"/>
         <TextBlock Name="PageInfo" 
                    Margin="10" 
@@ -69,10 +73,14 @@
         <Button Content="&gt;" 
                 Style="{StaticResource RoundCornerButton}"
                 Margin="5"
+                Background="#FF51759B" 
+                Foreground="White" 
                 Command="{Binding NextPageCommand}"/>
         <Button Content="&gt;&gt;" 
                 Style="{StaticResource RoundCornerButton}"
                 Margin="5"
+                Background="#FF51759B" 
+                Foreground="White" 
                 Command="{Binding LastPageCommand}"/>
     </StackPanel>
 </UserControl>

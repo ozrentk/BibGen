@@ -1,6 +1,7 @@
 ﻿using BibGen.App.Viewmodel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -109,8 +110,9 @@ namespace BibGen.App.UserControls
 
                 textBlock.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-                var left = (ActualWidth - textBlock.DesiredSize.Width) / 2;
-                var top = -textBlock.DesiredSize.Height + (double)stripe.Baseline * this.ActualHeight;
+                Debug.WriteLine($"RenderSize.Width: {RenderSize.Width}, textBlock.DesiredSize.Width: {textBlock.DesiredSize.Width}");
+                var left = (OverlayCanvas.ActualWidth - textBlock.DesiredSize.Width) / 2;
+                var top = -textBlock.DesiredSize.Height + (double)stripe.Baseline * OverlayCanvas.ActualHeight;
                 Canvas.SetLeft(textBlock, left);
                 Canvas.SetTop(textBlock, top);
 
