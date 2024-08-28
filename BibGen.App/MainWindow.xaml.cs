@@ -34,9 +34,12 @@ namespace BibGen.App
                     var bibPropertyNames = bibDataLoader.GetBibPropertyNames(fileBrowserViewModel.FilePathContent);
                     MyDataContext.BibPropertyNames = new ObservableCollection<string>(bibPropertyNames);
 
-                    var bibData = bibDataLoader.LoadBibEntries(fileBrowserViewModel.FilePathContent);
-                    MyDataContext.BibEntries = new ObservableCollection<BibEntry>(bibData);
-                    MyDataContext.PaginationVM.Reset(bibData.Count);
+                    var bibEntries = bibDataLoader.LoadBibEntries(fileBrowserViewModel.FilePathContent);
+                    MyDataContext.BibEntries.Clear();
+                    foreach (var bibEntry in bibEntries) 
+                    {
+                        MyDataContext.BibEntries.Add(bibEntry);
+                    }
                 }
             }
         }

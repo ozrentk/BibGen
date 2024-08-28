@@ -1,5 +1,4 @@
 ﻿using BibGen.App.Viewmodel;
-using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using System.Windows.Controls;
 

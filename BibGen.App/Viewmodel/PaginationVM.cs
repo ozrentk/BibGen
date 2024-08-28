@@ -4,26 +4,18 @@ using System.Windows.Input;
 
 namespace BibGen.App.Viewmodel
 {
-    public class PaginationVM : ObservableObject
+    public partial class PaginationVM : ObservableObject
     {
-        private int _currentItem;
-        public int CurrentItem
-        {
-            get => _currentItem;
-            private set => SetProperty(ref _currentItem, value);
-        }
-
-        private int _itemCount;
-        public int ItemCount
-        {
-            get => _itemCount;
-            private set => SetProperty(ref _itemCount, value);
-        }
-
         public ICommand FirstPageCommand { get; set; }
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand LastPageCommand { get; set; }
+
+        [ObservableProperty]
+        private int _currentItem;
+
+        [ObservableProperty]
+        private int _itemCount;
 
         public PaginationVM()
         {

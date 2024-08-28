@@ -60,9 +60,12 @@
         <TextBlock Name="PageInfo" 
                    Margin="10" 
                    VerticalAlignment="Center"
-                   Text="{Binding CurrentItem, Converter={StaticResource IncrementConverter}}"
                    FontWeight="Bold"
-                   FontSize="24"/>
+                   FontSize="24">
+            <Run Text="{Binding CurrentItem, Converter={StaticResource IncrementConverter}, Mode=OneWay}" />
+            <Run Text="of" />
+            <Run Text="{Binding ItemCount, Mode=OneWay}" />
+        </TextBlock>
         <Button Content="&gt;" 
                 Style="{StaticResource RoundCornerButton}"
                 Margin="5"

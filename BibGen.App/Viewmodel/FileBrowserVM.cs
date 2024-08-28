@@ -2,51 +2,34 @@
 
 namespace BibGen.App.Viewmodel
 {
-    public class FileBrowserVM : ObservableObject
+    public partial class FileBrowserVM : ObservableObject
     {
+        [ObservableProperty]
         private string _browseButtonContent = "Browse...";
+
+        [ObservableProperty]
         private string _placeholderContent = "Select file";
+
+        //[ObservableProperty]
         private string _filePathContent = "";
-        private string _defaultFilePathContent = "";
-        private string _filter = "";
-        private string _title = "";
-
-        public string BrowseButtonContent
-        {
-            get => _browseButtonContent;
-            set => SetProperty(ref _browseButtonContent, value);
-        }
-
-        public string PlaceholderContent
-        {
-            get => _placeholderContent;
-            set => SetProperty(ref _placeholderContent, value);
-        }
-
+        // TODO: This is a workaround for the issue that the default value is not set in the XAML.
+        // Should fix.
         public string FilePathContent
         {
-            get => string.IsNullOrEmpty(_filePathContent) ? 
+            get => string.IsNullOrEmpty(_filePathContent) ?
                     _defaultFilePathContent :
                     _filePathContent;
             set => SetProperty(ref _filePathContent, value);
         }
 
-        public string DefaultFilePathContent
-        {
-            get => _defaultFilePathContent;
-            set => SetProperty(ref _defaultFilePathContent, value);
-        }
 
-        public string Filter
-        {
-            get => _filter;
-            set => SetProperty(ref _filter, value);
-        }
+        [ObservableProperty]
+        private string _defaultFilePathContent = "";
 
-        public string Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
+        [ObservableProperty]
+        private string _filter = "";
+
+        [ObservableProperty]
+        private string _title = "";
     }
 }

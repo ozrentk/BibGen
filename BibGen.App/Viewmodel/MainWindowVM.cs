@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Windows.Input;
 
@@ -37,41 +38,15 @@ namespace BibGen.App.Viewmodel
         private ObservableCollection<string> _bibPropertyNames;
 
         [ObservableProperty]
-        private string _statusMessage;
-
-        //private ObservableCollection<BibEntry> _bibEntries;
-        //public ObservableCollection<BibEntry> BibEntries
-        //{
-        //    get => _bibEntries;
-        //    set
-        //    {
-        //        SetProperty(ref _bibEntries, value);
-        //        BibEntriesCount = _bibEntries.Count;
-        //    }
-        //}
-
-        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(BibEntriesCount))]
         private ObservableCollection<BibEntry> _bibEntries;
-
-        //private int _bibEntriesCount;
-        //public int BibEntriesCount
-        //{
-        //    get => _bibEntriesCount;
-        //    set
-        //    {
-        //        if (_bibEntriesCount != value)
-        //        {
-        //            _bibEntriesCount = value;
-        //            OnPropertyChanged(nameof(BibEntriesCount));
-        //            UpdateStatusMessage();
-        //        }
-        //    }
-        //}
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(StatusMessage))]
         private int _bibEntriesCount;
+
+        [ObservableProperty]
+        private string _statusMessage;
 
         public MainWindowVM()
         {
@@ -112,13 +87,14 @@ namespace BibGen.App.Viewmodel
             ExportAllBibsCommand = new RelayCommand(ExportAllBibs);
         }
 
-        private void BibEntries_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
+        private void BibEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
             BibEntriesCount = _bibEntries.Count;
-        }
 
-        partial void OnBibEntriesCountChanged(int value) =>
+        partial void OnBibEntriesCountChanged(int value)
+        {
             UpdateStatusMessage();
+            PaginationVM.Reset(value);
+        }
 
         private void UpdateStatusMessage() =>
             StatusMessage =
