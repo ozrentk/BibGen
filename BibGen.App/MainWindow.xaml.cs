@@ -1,7 +1,5 @@
 ﻿using BibGen.App.Viewmodel;
 using BibGen.Services;
-using BibGen.Svc.Model;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -42,24 +40,6 @@ namespace BibGen.App
                     }
                 }
             }
-        }
-
-        private void OpenCmdCanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;
-
-        private void OpenCmdExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is not FileBrowserVM fileBrowserVM)
-                return;
-
-            var ofd = new OpenFileDialog();
-            ofd.InitialDirectory = Environment.CurrentDirectory;
-            ofd.Filter = fileBrowserVM.Filter;
-            ofd.Title = fileBrowserVM.Title;
-
-            if (ofd.ShowDialog() == false)
-                return;
-
-            fileBrowserVM.FilePathContent = ofd.FileName;
         }
 
         private void AddStripeCanExecute(object sender, CanExecuteRoutedEventArgs e) => e.CanExecute = true;

@@ -20,7 +20,7 @@ namespace BibGen.App.Viewmodel
         public FileBrowserVM _excelFilePathVM;
 
         [ObservableProperty]
-        private FileBrowserVM _outputFolderVM;
+        private FolderBrowserVM _outputFolderVM;
 
         [ObservableProperty]
         private StripePropertiesVM _stripePropertiesVM;
@@ -54,26 +54,26 @@ namespace BibGen.App.Viewmodel
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select Excel file",
-                DefaultFilePathContent = "pack://application:,,,/BibGen.App;component/ExcelFiles/example.xlsx",
+                FilePathContent = "",
                 Filter = "Excel files (*.xlsx)|*.xlsx",
                 Title = "Select Excel file"
-            };
+            };            
 
             _backgroundImageVM = new FileBrowserVM
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select background image file",
-                DefaultFilePathContent = "pack://application:,,,/BibGen.App;component/Images/q.jpeg",
+                FilePathContent = "",
                 Filter = "Image files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png",
-                Title = "Select background image file"
+                Title = "Select background image file",
             };
 
-            _outputFolderVM = new FileBrowserVM
+            _outputFolderVM = new FolderBrowserVM
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select output folder",
-                DefaultFilePathContent = "",
-                Title = "Select output folder"
+                Title = "Select output folder",
+                FolderPathContent = "",
             };
 
             _stripePropertiesVM = new();

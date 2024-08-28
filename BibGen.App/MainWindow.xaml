@@ -11,16 +11,10 @@
         Height="650" 
         Width="1210">
     <Window.InputBindings>
-        <KeyBinding Key="O"
-                    Modifiers="Control" 
-                    Command="Open" />
         <KeyBinding Key="Esc"
                     Command="{x:Static cmd:BibGenCommands.DeselectStripe}" />
     </Window.InputBindings>
     <Window.CommandBindings>
-        <CommandBinding Command="Open"
-                        Executed="OpenCmdExecuted"
-                        CanExecute="OpenCmdCanExecute"/>
         <CommandBinding Command="{x:Static cmd:BibGenCommands.AddStripe}"
                         Executed="AddStripeExecuted"
                         CanExecute="AddStripeCanExecute"/>

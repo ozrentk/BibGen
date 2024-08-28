@@ -6,9 +6,9 @@ using System.Windows.Input;
 
 namespace BibGen.App.UserControls
 {
-    public partial class FileBrowserUserControl : UserControl
+    public partial class FolderBrowserUserControl : UserControl
     {
-        public FileBrowserUserControl()
+        public FolderBrowserUserControl()
         {
             InitializeComponent();
         }
@@ -17,18 +17,17 @@ namespace BibGen.App.UserControls
 
         private void OpenCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Parameter is not FileBrowserVM fileBrowserVM)
+            if (e.Parameter is not FolderBrowserVM fileBrowserVM)
                 return;
 
-            var ofd = new OpenFileDialog();
+            var ofd = new OpenFolderDialog();
             ofd.InitialDirectory = Environment.CurrentDirectory;
-            ofd.Filter = fileBrowserVM.Filter;
             ofd.Title = fileBrowserVM.Title;
 
             if (ofd.ShowDialog() == false)
                 return;
 
-            fileBrowserVM.FilePathContent = ofd.FileName;
+            fileBrowserVM.FolderPathContent = ofd.FolderName;
         }
     }
 }
