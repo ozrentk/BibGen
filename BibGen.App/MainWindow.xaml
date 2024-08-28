@@ -1,0 +1,115 @@
+﻿<Window x:Class="BibGen.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:cmd="clr-namespace:BibGen.App.Commands"
+        xmlns:uc="clr-namespace:BibGen.App.UserControls"
+        xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
+        mc:Ignorable="d"
+        Title="BIB Generator" 
+        Height="650" 
+        Width="1210">
+    <Window.InputBindings>
+        <KeyBinding Key="O"
+                    Modifiers="Control" 
+                    Command="Open" />
+        <KeyBinding Key="Esc"
+                    Command="{x:Static cmd:BibGenCommands.DeselectStripe}" />
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="Open"
+                        Executed="OpenCmdExecuted"
+                        CanExecute="OpenCmdCanExecute"/>
+        <CommandBinding Command="{x:Static cmd:BibGenCommands.AddStripe}"
+                        Executed="AddStripeExecuted"
+                        CanExecute="AddStripeCanExecute"/>
+        <CommandBinding Command="{x:Static cmd:BibGenCommands.UpdateStripe}"
+                        Executed="UpdateStripeExecuted"
+                        CanExecute="UpdateStripeCanExecute"/>
+        <CommandBinding Command="{x:Static cmd:BibGenCommands.RemoveStripe}"
+                        Executed="RemoveStripeExecuted"
+                        CanExecute="RemoveStripeCanExecute"/>
+        <CommandBinding Command="{x:Static cmd:BibGenCommands.SelectStripe}"
+                        Executed="SelectStripeExecuted"
+                        CanExecute="SelectStripeCanExecute"/>
+        <CommandBinding Command="{x:Static cmd:BibGenCommands.DeselectStripe}"
+                        Executed="DeselectStripeExecuted"
+                        CanExecute="DeselectStripeCanExecute"/>
+    </Window.CommandBindings>
+    <Window.DataContext>
+        <vm:MainWindowVM />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
+            </Grid.ColumnDefinitions>
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0"
+                        BorderBrush="Black"
+                        BorderThickness="1">
+                    <!--<Image x:Name="BibBackgroundImage"
+                           Source="{Binding Path=BackgroundImageVM.FilePathContent}" 
+                           Stretch="Uniform"/>-->
+                </Border>
+                <Border Grid.Row="0"
+                        BorderBrush="Transparent"
+                        BorderThickness="1">
+                    <uc:PreviewOverlayControl DataContext="{Binding}"/>
+                </Border>
+                <uc:PaginationControl Grid.Row="1"
+                                      DataContext="{Binding PaginationVM}"/>
+            </Grid>
+            <Grid Grid.Column="1"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <uc:BibBasicPropertiesControl Grid.Row="0"
+                                              Margin="0,0,0,5"/>
+                <uc:StripePropertiesControl Grid.Row="1"
+                                            Margin="0,0,0,5"
+                                            DataContext="{Binding StripePropertiesVM}"/>
+                <uc:StripeListViewUserControl Grid.Row="2" />
+                <StackPanel Grid.Row="3"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Grid.Row="5"
+                            Command="{Binding ExportCurrentBibCommand}"
+                            Margin="0,5,5,0"
+                            Height="30"
+                            Width="90"
+                            Foreground="White"
+                            Background="#FF51759B">Export Current</Button>
+                    <Button Grid.Row="5"
+                            Command="{Binding ExportAllBibsCommand}"
+                            Margin="0,5,0,0"
+                            Height="30"
+                            Width="90"
+                            Foreground="White"
+                            Background="#FF51759B">Export All</Button>
+
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <StatusBar Grid.Row="1"
+                   Height="25">
+            <StatusBarItem>
+                <TextBlock Text="{Binding StatusMessage}" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="BibGen.App.UserControls.StripeItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:conv="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+             xmlns:cmd="clr-namespace:BibGen.App.Commands"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Viewbox x:Name="SelectedIndicator"
+                 Margin="3"
+                 Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Path Data="M 0.4766 11.4713 l 6.9126 -5.5141 c 0.1141 -0.0912 0.1141 -0.284 0 -0.3752 L 0.4762 0.0672 c -0.0827 -0.0656 -0.2059 -0.0851 -0.3132 -0.0497 c -0.0223 0.0073 -0.0396 0.0155 -0.0523 0.0223 c -0.078 0.042 -0.1267 0.123 -0.1267 0.2117 v 11.036 c 0 0.0883 0.0486 0.1697 0.1267 0.2114 c 0.0131 0.0072 0.0304 0.0152 0.0511 0.0222 C 0.2701 11.5566 0.3937 11.5373 0.4766 11.4713 z" 
+                  Fill="YellowGreen"/>
+        </Viewbox>
+        <DockPanel LastChildFill="True"
+                   HorizontalAlignment="Stretch"
+                   Grid.Column="1">
+            <TextBlock>
+                <Run Text="{Binding ExcelColumnName}" FontWeight="Bold" Background="{Binding Color}" />
+                <Run Text="as" />
+                <Run Text="{Binding FontName}" />
+                <Run Text="{Binding FontSize}" />
+                <Run Text="{Binding Baseline, StringFormat={}@{0:P0}}" FontStyle="Italic" />
+            </TextBlock>
+        </DockPanel>
+        <DockPanel Grid.Column="2">
+            <Button Command="{x:Static cmd:BibGenCommands.RemoveStripe}"
+                    CommandParameter="{Binding}"
+                    VerticalContentAlignment="Center"
+                    Margin="0"
+                    Background="Red"
+                    BorderThickness="0"
+                    UseLayoutRounding="True">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Button.Resources>
+                <Viewbox Width="10" 
+                         HorizontalAlignment="Center"
+                         Margin="3">
+                    <Path Data="M 33.335 5.668 h -8.167 V 1.5 c 0 -0.828 -0.672 -1.5 -1.5 -1.5 h -12 c -0.828 0 -1.5 0.672 -1.5 1.5 v 4.168 H 2.001 c -1.104 0 -2 0.896 -2 2 s 0.896 2 2 2 h 2.001 v 29.168 c 0 1.381 1.119 2.5 2.5 2.5 h 22.332 c 1.381 0 2.5 -1.119 2.5 -2.5 V 9.668 h 2.001 c 1.104 0 2 -0.896 2 -2 S 34.438 5.668 33.335 5.668 z M 11.168 35.67 c 0 0.828 -0.672 1.5 -1.5 1.5 s -1.5 -0.672 -1.5 -1.5 v -21 c 0 -0.828 0.672 -1.5 1.5 -1.5 s 1.5 0.672 1.5 1.5 V 35.67 z M 19.168 35.67 c 0 0.828 -0.672 1.5 -1.5 1.5 s -1.5 -0.672 -1.5 -1.5 v -21 c 0 -0.828 0.672 -1.5 1.5 -1.5 s 1.5 0.672 1.5 1.5 V 35.67 z M 22.168 5.668 h -9 V 3 h 9 V 5.668 z M 27.168 35.67 c 0 0.828 -0.672 1.5 -1.5 1.5 s -1.5 -0.672 -1.5 -1.5 v -21 c 0 -0.828 0.672 -1.5 1.5 -1.5 s 1.5 0.672 1.5 1.5 V 35.67 z" 
+                          Fill="White"/>
+                </Viewbox>
+            </Button>
+        </DockPanel>
+    </Grid>
+</UserControl>

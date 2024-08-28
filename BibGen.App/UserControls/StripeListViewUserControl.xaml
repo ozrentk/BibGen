@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="BibGen.App.UserControls.StripeListViewUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cmd="clr-namespace:BibGen.App.Commands"
+             xmlns:uc="clr-namespace:BibGen.App.UserControls"
+             xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
+             mc:Ignorable="d"
+             MinWidth="200"
+             MinHeight="120">
+    <UserControl.Resources>
+        <Style TargetType="ListViewItem">
+            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        
+        <!-- Title Bar -->
+        <TextBlock DockPanel.Dock="Top" 
+                   Background="#FF51759B" 
+                   Foreground="White" 
+                   Padding="3"
+                   Text="Stripes" />
+        
+        <!-- Content -->
+        <Border DockPanel.Dock="Top"
+                BorderBrush="#FF51759B"
+                BorderThickness="1">
+            <ListView x:Name="StripeListView"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ItemsSource="{Binding StripeItems}"
+                      HorizontalContentAlignment="Stretch"
+                      BorderThickness="0"
+                      LostFocus="ListView_LostFocus">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <uc:StripeItemControl />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
+        
+    </DockPanel>
+</UserControl>

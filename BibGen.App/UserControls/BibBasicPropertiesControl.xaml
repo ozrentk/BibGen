@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="BibGen.App.UserControls.BibBasicPropertiesControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BibGen.App.UserControls"
+             xmlns:uc="clr-namespace:BibGen.App.UserControls"
+             xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    <!--<UserControl.DataContext>
+        <vm:BasicPropertiesVM />
+    </UserControl.DataContext>-->
+    <DockPanel>
+        
+        <!-- Title Bar -->
+        <TextBlock DockPanel.Dock="Top" 
+                    Background="#FF51759B" 
+                    Foreground="White" 
+                    Padding="3"
+                    Text="Bib Properties and Data" />
+        
+        <!-- Content -->
+        <Border
+            BorderBrush="#FF51759B"
+            BorderThickness="1">
+            <Grid VerticalAlignment="Top"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!-- Row 0 -->
+                <TextBlock Grid.Row="0" 
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Text="Excel data file:"
+                           FontWeight="Bold" />
+
+                <!-- Row 1 -->
+                <uc:FileBrowserUserControl Grid.Row="1"
+                                           Margin="5"
+                                           VerticalAlignment="Top"
+                                           ViewModel="{Binding ExcelFilePathVM}"/>
+
+                <!-- Row 2 -->
+                <TextBlock Grid.Row="2" 
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Text="Background image:"
+                           FontWeight="Bold" />
+
+                <!-- Row 3 -->
+                <uc:FileBrowserUserControl Grid.Row="3"
+                                           Margin="5"
+                                           VerticalAlignment="Top"
+                                           ViewModel="{Binding BackgroundImageVM}"/>
+
+                <!-- Row 4 -->
+                <TextBlock Grid.Row="4" 
+                           Margin="5"
+                           VerticalAlignment="Center"
+                           Text="Output folder:"
+                           FontWeight="Bold" />
+
+                <!-- Row 5 -->
+                <uc:FileBrowserUserControl Grid.Row="5"
+                                           Margin="5"
+                                           VerticalAlignment="Top"
+                                           ViewModel="{Binding OutputFolderVM}"/>
+            </Grid>
+        </Border>
+        
+    </DockPanel>
+</UserControl>
