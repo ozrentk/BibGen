@@ -1,22 +1,8 @@
-## Packages
-
-- dotnet add package ClosedXML
-- dotnet add package SkiaSharp
-- dotnet add package PdfSharpCore
-- dotnet add package Microsoft.Extensions.DependencyInjection
-
 ## Todos
 
-### Immediately:
-- add output folder in "Bib Properies and Data" panel
-- implement "Export Current"
-- implement "Export All"
-
-### Priority:
-- find a way to properly fit overlay to background
+### High Priority:
+- find a way to more closely fit overlay to background (DPI measurement)
 - add option to import custom font
-- validation, UI state (closely related in WPF?)
-- get rid of default file paths in textboxes
 
 ### Low priority:
 - show "Loading" indicator when opening Excel file

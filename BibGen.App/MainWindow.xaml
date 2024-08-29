@@ -5,28 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uc="clr-namespace:BibGen.App.UserControls"
         xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
+        xmlns:conv="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
         mc:Ignorable="d"
         Title="BIB Generator" 
         Height="650" 
         Width="1210">
-    <!--<Window.InputBindings>
-        <KeyBinding Key="Esc"
-                    Command="{x:Static cmd:BibGenCommands.DeselectStripe}" />
-    </Window.InputBindings>-->
-    <!--<Window.CommandBindings>
-        <CommandBinding Command="{x:Static cmd:BibGenCommands.AddStripe}"
-                        Executed="AddStripeExecuted"
-                        CanExecute="AddStripeCanExecute"/>
-        <CommandBinding Command="{x:Static cmd:BibGenCommands.UpdateStripe}"
-                        Executed="UpdateStripeExecuted"
-                        CanExecute="UpdateStripeCanExecute"/>
-        <CommandBinding Command="{x:Static cmd:BibGenCommands.RemoveStripe}"
-                        Executed="RemoveStripeExecuted"
-                        CanExecute="RemoveStripeCanExecute"/>
-    </Window.CommandBindings>-->
     <Window.DataContext>
         <vm:MainWindowVM />
     </Window.DataContext>
+    <Window.Resources>
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -69,25 +58,30 @@
                                               Margin="0,0,0,5"/>
                 <uc:StripePropertiesControl Grid.Row="1"
                                             Margin="0,0,0,5"
-                                            DataContext="{Binding StripePropertiesVM}"/>
-                <uc:StripeListViewUserControl Grid.Row="2" />
+                                            DataContext="{Binding StripePropertiesVM}"
+                                            Visibility="{Binding DataContext.BibEntriesLoaded, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <uc:StripeListViewUserControl Grid.Row="2"
+                                            Visibility="{Binding DataContext.BibEntriesLoaded, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <StackPanel Grid.Row="3"
                             Orientation="Horizontal"
-                            HorizontalAlignment="Right">
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding DataContext.BibEntriesLoaded, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button Grid.Row="5"
                             Command="{Binding ExportCurrentBibCommand}"
                             Margin="0,5,5,0"
                             Height="30"
                             Width="90"
                             Foreground="White"
-                            Background="#FF51759B">Export Current</Button>
+                            Background="#FF51759B"
+                            IsEnabled="{Binding IsExportAllowed}">Export Current</Button>
                     <Button Grid.Row="5"
                             Command="{Binding ExportAllBibsCommand}"
                             Margin="0,5,0,0"
                             Height="30"
                             Width="90"
                             Foreground="White"
-                            Background="#FF51759B">Export All</Button>
+                            Background="#FF51759B"
+                            IsEnabled="{Binding IsExportAllowed}">Export All</Button>
 
                 </StackPanel>
             </Grid>

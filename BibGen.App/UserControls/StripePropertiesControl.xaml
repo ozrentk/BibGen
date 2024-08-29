@@ -99,6 +99,7 @@
                 <!-- Row 5 -->
                 <Button Grid.Row="5"
                         Grid.Column="0"
+                        IsEnabled="{Binding Path=DataContext.IsStripeItemSelected, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         Command="{Binding Path=DataContext.UpdateStripeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         Margin="5"
@@ -106,11 +107,13 @@
                         Background="#FF51759B">Update</Button>
                 <Button Grid.Row="5"
                         Grid.Column="1"
+                        IsEnabled="{Binding MandatoryPropertiesSelected}"
                         Command="{Binding Path=DataContext.AddStripeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         Margin="5"
                         Foreground="White"
-                        Background="#FF51759B">Add</Button>
+                        Background="#FF51759B"
+                        >Add</Button>
 
             </Grid>
         </Border>

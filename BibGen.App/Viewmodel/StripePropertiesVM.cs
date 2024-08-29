@@ -20,6 +20,7 @@ namespace BibGen.App.Viewmodel
                         144, 168, 192, 216, 264, 312, 360, 408, 456, 552 };
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(MandatoryPropertiesSelected))]
         public string _selectedFont;
 
         [ObservableProperty]
@@ -32,7 +33,11 @@ namespace BibGen.App.Viewmodel
         private decimal _baseline = 0.5M;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(MandatoryPropertiesSelected))]
         private string _excelColumnName;
+
+        [ObservableProperty]
+        private bool _mandatoryPropertiesSelected;
 
         public StripePropertiesVM()
         {
@@ -44,5 +49,16 @@ namespace BibGen.App.Viewmodel
             var fonts = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(x => x);
             FontItems = new ObservableCollection<string>(fonts);
         }
+
+        partial void OnSelectedFontChanged(string value) =>
+            CalculateMandatoryPropertiesSelected();
+
+        partial void OnExcelColumnNameChanged(string value) =>
+            CalculateMandatoryPropertiesSelected();
+
+        private void CalculateMandatoryPropertiesSelected() =>
+            MandatoryPropertiesSelected =
+                !string.IsNullOrEmpty(SelectedFont) && 
+                !string.IsNullOrEmpty(ExcelColumnName);
     }
 }

@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BibGen.App.Viewmodel
@@ -23,19 +24,26 @@ namespace BibGen.App.Viewmodel
         private FileBrowserVM _backgroundImageVM;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsExportAllowed))]
         public FileBrowserVM _excelFilePathVM;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsExportAllowed))]
         private FolderBrowserVM _outputFolderVM;
 
         [ObservableProperty]
         private StripePropertiesVM _stripePropertiesVM;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsExportAllowed))]
         private ObservableCollection<StripeItemVM> _stripeItems;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(IsStripeItemSelected))]
         private StripeItemVM _selectedStripeItem;
+
+        [ObservableProperty]
+        private bool _isStripeItemSelected;
 
         [ObservableProperty]
         private PaginationVM _paginationVM;
@@ -49,10 +57,18 @@ namespace BibGen.App.Viewmodel
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(StatusMessage))]
+        [NotifyPropertyChangedFor(nameof(BibEntriesLoaded))]
+        [NotifyPropertyChangedFor(nameof(IsExportAllowed))]
         private int _bibEntriesCount;
 
         [ObservableProperty]
+        private bool _bibEntriesLoaded;
+
+        [ObservableProperty]
         private string _statusMessage;
+
+        [ObservableProperty]
+        private bool _isExportAllowed;
 
         public MainWindowVM()
         {
@@ -91,6 +107,7 @@ namespace BibGen.App.Viewmodel
 
             _bibEntries.CollectionChanged += BibEntries_CollectionChanged;
             _excelFilePathVM.PropertyChanged += ExcelFilePathVM_PropertyChanged;
+            _stripeItems.CollectionChanged += StripeItems_CollectionChanged;
 
             ExportCurrentBibCommand = new RelayCommand(ExportCurrentBib);
             ExportAllBibsCommand = new RelayCommand(ExportAllBibs);
@@ -103,9 +120,26 @@ namespace BibGen.App.Viewmodel
         private void BibEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
             BibEntriesCount = _bibEntries.Count;
 
+        private void StripeItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
+            UpdateIsExportAllowedFlag();
+
+        partial void OnSelectedStripeItemChanged(StripeItemVM value) =>
+            IsStripeItemSelected = true;
+
+        partial void OnBackgroundImageVMChanged(FileBrowserVM value) =>
+            UpdateIsExportAllowedFlag();
+
+        partial void OnOutputFolderVMChanged(FolderBrowserVM value) =>
+            UpdateIsExportAllowedFlag();
+
+        partial void OnStripeItemsChanged(ObservableCollection<StripeItemVM> value) =>
+            UpdateIsExportAllowedFlag();
+
         partial void OnBibEntriesCountChanged(int value)
         {
             UpdateStatusMessage();
+            UpdateLoadedFlag();
+            UpdateIsExportAllowedFlag();
             PaginationVM.Reset(value);
         }
 
@@ -130,11 +164,21 @@ namespace BibGen.App.Viewmodel
             }
         }
 
+        private void UpdateLoadedFlag() =>
+            BibEntriesLoaded = _bibEntriesCount > 0;
+
         private void UpdateStatusMessage() =>
             StatusMessage =
                 _bibEntriesCount > 0 ?
                     $"Loaded {_bibEntriesCount} entries" :
                     "No entries loaded";
+
+        private void UpdateIsExportAllowedFlag() =>
+            IsExportAllowed =
+                _bibEntriesCount > 0 &&
+                !string.IsNullOrEmpty(BackgroundImageVM.FilePathContent) &&
+                !string.IsNullOrEmpty(OutputFolderVM.FolderPathContent) &&
+                StripeItems.Count > 0;
 
         public void AddStripe(StripePropertiesVM stripeProps) =>
             StripeItems.Add(new StripeItemVM
@@ -210,6 +254,12 @@ namespace BibGen.App.Viewmodel
                 LineDescriptors = stripeItems,
                 ExportBibAt = exportBibAt
             });
+
+            MessageBox.Show(
+                "Export completed", 
+                "Export", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Information);
         }
     }
 }
