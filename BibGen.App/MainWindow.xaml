@@ -3,18 +3,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cmd="clr-namespace:BibGen.App.Commands"
         xmlns:uc="clr-namespace:BibGen.App.UserControls"
         xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
         mc:Ignorable="d"
         Title="BIB Generator" 
         Height="650" 
         Width="1210">
-    <Window.InputBindings>
+    <!--<Window.InputBindings>
         <KeyBinding Key="Esc"
                     Command="{x:Static cmd:BibGenCommands.DeselectStripe}" />
-    </Window.InputBindings>
-    <Window.CommandBindings>
+    </Window.InputBindings>-->
+    <!--<Window.CommandBindings>
         <CommandBinding Command="{x:Static cmd:BibGenCommands.AddStripe}"
                         Executed="AddStripeExecuted"
                         CanExecute="AddStripeCanExecute"/>
@@ -24,13 +23,7 @@
         <CommandBinding Command="{x:Static cmd:BibGenCommands.RemoveStripe}"
                         Executed="RemoveStripeExecuted"
                         CanExecute="RemoveStripeCanExecute"/>
-        <CommandBinding Command="{x:Static cmd:BibGenCommands.SelectStripe}"
-                        Executed="SelectStripeExecuted"
-                        CanExecute="SelectStripeCanExecute"/>
-        <CommandBinding Command="{x:Static cmd:BibGenCommands.DeselectStripe}"
-                        Executed="DeselectStripeExecuted"
-                        CanExecute="DeselectStripeCanExecute"/>
-    </Window.CommandBindings>
+    </Window.CommandBindings>-->
     <Window.DataContext>
         <vm:MainWindowVM />
     </Window.DataContext>

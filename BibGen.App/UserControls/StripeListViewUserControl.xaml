@@ -3,17 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:cmd="clr-namespace:BibGen.App.Commands"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:uc="clr-namespace:BibGen.App.UserControls"
              xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
              mc:Ignorable="d"
              MinWidth="200"
              MinHeight="120">
-    <UserControl.Resources>
-        <Style TargetType="ListViewItem">
-            <EventSetter Event="MouseDoubleClick" Handler="ListViewItem_MouseDoubleClick"/>
-        </Style>
-    </UserControl.Resources>
     <DockPanel>
         
         <!-- Title Bar -->
@@ -31,8 +26,13 @@
                       ScrollViewer.VerticalScrollBarVisibility="Auto"
                       ItemsSource="{Binding StripeItems}"
                       HorizontalContentAlignment="Stretch"
-                      BorderThickness="0"
-                      LostFocus="ListView_LostFocus">
+                      BorderThickness="0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding SelectStripeCommand}"
+                                               CommandParameter="{Binding ElementName=StripeListView, Path=SelectedItem}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <uc:StripeItemControl />

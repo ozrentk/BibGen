@@ -10,21 +10,8 @@ namespace BibGen.App.Viewmodel
         [ObservableProperty]
         private string _placeholderContent = "Select file";
 
-        //[ObservableProperty]
-        private string _filePathContent = "";
-        // TODO: This is a workaround for the issue that the default value is not set in the XAML.
-        // Should fix.
-        public string FilePathContent
-        {
-            get => string.IsNullOrEmpty(_filePathContent) ?
-                    _defaultFilePathContent :
-                    _filePathContent;
-            set => SetProperty(ref _filePathContent, value);
-        }
-
-
         [ObservableProperty]
-        private string _defaultFilePathContent = "";
+        private string _filePathContent = "";
 
         [ObservableProperty]
         private string _filter = "";

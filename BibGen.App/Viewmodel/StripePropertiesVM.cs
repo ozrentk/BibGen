@@ -1,14 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace BibGen.App.Viewmodel
 {
     public partial class StripePropertiesVM : ObservableObject
     {
+        public ICommand LoadFontsCommand { get; set; }
+
         [ObservableProperty]
-        private ObservableCollection<ComboBoxItem> _fontItems;
+        private ObservableCollection<string> _fontItems;
 
         [ObservableProperty]
         private ObservableCollection<int> _fontSizes =
@@ -17,7 +20,7 @@ namespace BibGen.App.Viewmodel
                         144, 168, 192, 216, 264, 312, 360, 408, 456, 552 };
 
         [ObservableProperty]
-        public ComboBoxItem _selectedFont;
+        public string _selectedFont;
 
         [ObservableProperty]
         private int _fontSize = 12;
@@ -30,5 +33,16 @@ namespace BibGen.App.Viewmodel
 
         [ObservableProperty]
         private string _excelColumnName;
+
+        public StripePropertiesVM()
+        {
+            LoadFontsCommand = new RelayCommand(LoadFonts);
+        }
+
+        private void LoadFonts()
+        {
+            var fonts = Fonts.SystemFontFamilies.Select(f => f.Source).OrderBy(x => x);
+            FontItems = new ObservableCollection<string>(fonts);
+        }
     }
 }

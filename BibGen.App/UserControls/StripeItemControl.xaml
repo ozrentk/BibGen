@@ -4,7 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:conv="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
-             xmlns:cmd="clr-namespace:BibGen.App.Commands"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800">
@@ -27,7 +26,7 @@
                    HorizontalAlignment="Stretch"
                    Grid.Column="1">
             <TextBlock>
-                <Run Text="{Binding ExcelColumnName}" FontWeight="Bold" Background="{Binding Color}" />
+                <Run Text="{Binding ExcelColumnName}" FontWeight="Bold" />
                 <Run Text="as" />
                 <Run Text="{Binding FontName}" />
                 <Run Text="{Binding FontSize}" />
@@ -35,7 +34,7 @@
             </TextBlock>
         </DockPanel>
         <DockPanel Grid.Column="2">
-            <Button Command="{x:Static cmd:BibGenCommands.RemoveStripe}"
+            <Button Command="{Binding Path=DataContext.RemoveStripeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                     CommandParameter="{Binding}"
                     VerticalContentAlignment="Center"
                     Margin="0"

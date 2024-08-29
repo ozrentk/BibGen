@@ -4,10 +4,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:cmd="clr-namespace:BibGen.App.Commands"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vm="clr-namespace:BibGen.App.Viewmodel"
-             mc:Ignorable="d"
-             Loaded="UserControl_Loaded">
+             mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadFontsCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <DockPanel>
         
         <!-- Title Bar -->
@@ -95,14 +99,14 @@
                 <!-- Row 5 -->
                 <Button Grid.Row="5"
                         Grid.Column="0"
-                        Command="{x:Static cmd:BibGenCommands.UpdateStripe}"
+                        Command="{Binding Path=DataContext.UpdateStripeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         Margin="5"
                         Foreground="White"
                         Background="#FF51759B">Update</Button>
                 <Button Grid.Row="5"
                         Grid.Column="1"
-                        Command="{x:Static cmd:BibGenCommands.AddStripe}"
+                        Command="{Binding Path=DataContext.AddStripeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding}"
                         Margin="5"
                         Foreground="White"
