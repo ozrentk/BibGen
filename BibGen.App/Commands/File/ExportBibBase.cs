@@ -1,8 +1,6 @@
-﻿using BibGen.App.Viewmodel;
-using BibGen.Services;
+﻿using BibGen.Services;
 using BibGen.Svc.Model;
 using System.Windows;
-using System.Windows.Input;
 
 namespace BibGen.App.Commands.File
 {

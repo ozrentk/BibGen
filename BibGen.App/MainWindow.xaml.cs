@@ -1,5 +1,4 @@
-﻿using BibGen.App.Viewmodel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace BibGen.App
 {

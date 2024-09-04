@@ -2,11 +2,8 @@
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.IO;
-using System.Security.Cryptography;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
-using Xceed.Wpf.Toolkit;
 
 namespace BibGen.App.Commands.File
 {
@@ -51,9 +48,9 @@ namespace BibGen.App.Commands.File
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(
-                    ex.Message, 
-                    "Error", 
-                    MessageBoxButton.OK, 
+                    ex.Message,
+                    "Error",
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }

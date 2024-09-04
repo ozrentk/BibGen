@@ -42,7 +42,7 @@ namespace BibGen.App.Commands.Stripe
             _mainWindowVm.StripePropertiesVM.ExcelColumnName = stripeItem.ExcelColumnName;
             _mainWindowVm.StripePropertiesVM.Color = stripeItem.Color;
 
-            var selectedFontItem = 
+            var selectedFontItem =
                 _mainWindowVm.StripePropertiesVM.FontItems.FirstOrDefault(x => x.ToString() == stripeItem.FontName);
             _mainWindowVm.StripePropertiesVM.SelectedFont = selectedFontItem;
 

@@ -1,7 +1,5 @@
 ﻿using BibGen.App.Viewmodel;
-using BibGen.Services;
 using BibGen.Svc.Model;
-using System.Windows;
 using System.Windows.Input;
 
 namespace BibGen.App.Commands.File
@@ -15,13 +13,13 @@ namespace BibGen.App.Commands.File
             _viewModel = viewModel;
         }
 
-        public event EventHandler CanExecuteChanged 
-        { 
-            add { CommandManager.RequerySuggested += value; } 
-            remove { CommandManager.RequerySuggested -= value; } 
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public bool CanExecute(object parameter) => 
+        public bool CanExecute(object parameter) =>
             _viewModel.IsExportAllowed;
 
         public void Execute(object parameter)
