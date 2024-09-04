@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,6 +9,7 @@ namespace BibGen.App.Viewmodel
 {
     public partial class StripePropertiesVM : ObservableObject
     {
+        [JsonIgnore]
         public ICommand LoadFontsCommand { get; set; }
 
         [ObservableProperty]
@@ -58,7 +60,7 @@ namespace BibGen.App.Viewmodel
 
         private void CalculateMandatoryPropertiesSelected() =>
             MandatoryPropertiesSelected =
-                !string.IsNullOrEmpty(SelectedFont) && 
+                !string.IsNullOrEmpty(SelectedFont) &&
                 !string.IsNullOrEmpty(ExcelColumnName);
     }
 }

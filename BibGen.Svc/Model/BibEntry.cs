@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection;
-
-namespace BibGen.Svc.Model
+﻿namespace BibGen.Svc.Model
 {
     public class BibEntry
     {

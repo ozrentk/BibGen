@@ -1,5 +1,4 @@
 ﻿using BibGen.Svc.Model;
-using ICSharpCode.SharpZipLib.Zip;
 using SkiaSharp;
 
 namespace BibGen.Services

@@ -1,7 +1,4 @@
 ﻿using BibGen.App.Viewmodel;
-using BibGen.Services;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 
 namespace BibGen.App

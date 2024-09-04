@@ -1,11 +1,12 @@
-﻿using BibGen.Services;
+﻿using BibGen.App.Commands.File;
+using BibGen.App.Commands.Stripe;
+using BibGen.Services;
 using BibGen.Svc.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
-using System.Windows;
 using System.Windows.Input;
 
 namespace BibGen.App.Viewmodel
@@ -13,13 +14,35 @@ namespace BibGen.App.Viewmodel
     public partial class MainWindowVM : ObservableObject
     {
         public readonly BibDataLoader _bibDataLoader;
-        public ICommand ExportCurrentBibCommand { get; set; }
-        public ICommand ExportAllBibsCommand { get; set; }
-        public ICommand AddStripeCommand { get; set; }
-        public ICommand UpdateStripeCommand { get; set; }
-        public ICommand RemoveStripeCommand { get; set; }
-        public ICommand SelectStripeCommand { get; set; }
 
+        #region Commands
+        [JsonIgnore]
+        public ICommand ExportCurrentBibCommand { get; set; }
+        [JsonIgnore]
+        public ICommand ExportAllBibsCommand { get; set; }
+        [JsonIgnore]
+        public ICommand AddStripeCommand { get; set; }
+        [JsonIgnore]
+        public ICommand UpdateStripeCommand { get; set; }
+        [JsonIgnore]
+        public ICommand RemoveStripeCommand { get; set; }
+        [JsonIgnore]
+        public ICommand SelectStripeCommand { get; set; }
+        [JsonIgnore]
+        public ICommand NewBibProjectCommand { get; set; }
+        [JsonIgnore]
+        public ICommand OpenBibProjectCommand { get; set; }
+        [JsonIgnore]
+        public ICommand SaveBibProjectAsCommand { get; set; }
+        [JsonIgnore]
+        public ICommand SaveBibProjectCommand { get; set; }
+        [JsonIgnore]
+        public ICommand CloseBibProjectCommand { get; set; }
+        [JsonIgnore]
+        public ICommand ExitCommand { get; set; }
+        #endregion Commands
+
+        #region Observables
         [ObservableProperty]
         private FileBrowserVM _backgroundImageVM;
 
@@ -70,11 +93,15 @@ namespace BibGen.App.Viewmodel
         [ObservableProperty]
         private bool _isExportAllowed;
 
+        [ObservableProperty]
+        private string _savedAsFilePath;
+        #endregion Observables
+
         public MainWindowVM()
         {
             _bibDataLoader = new(); // TODO: use DI container
 
-            _excelFilePathVM = new FileBrowserVM
+            ExcelFilePathVM = new FileBrowserVM
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select Excel file",
@@ -83,7 +110,7 @@ namespace BibGen.App.Viewmodel
                 Title = "Select Excel file"
             };
 
-            _backgroundImageVM = new FileBrowserVM
+            BackgroundImageVM = new FileBrowserVM
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select background image file",
@@ -92,7 +119,7 @@ namespace BibGen.App.Viewmodel
                 Title = "Select background image file",
             };
 
-            _outputFolderVM = new FolderBrowserVM
+            OutputFolderVM = new FolderBrowserVM
             {
                 BrowseButtonContent = "Browse...",
                 PlaceholderContent = "Select output folder",
@@ -109,12 +136,18 @@ namespace BibGen.App.Viewmodel
             _excelFilePathVM.PropertyChanged += ExcelFilePathVM_PropertyChanged;
             _stripeItems.CollectionChanged += StripeItems_CollectionChanged;
 
-            ExportCurrentBibCommand = new RelayCommand(ExportCurrentBib);
-            ExportAllBibsCommand = new RelayCommand(ExportAllBibs);
-            AddStripeCommand = new RelayCommand<StripePropertiesVM>(AddStripe);
-            UpdateStripeCommand = new RelayCommand<StripePropertiesVM>(UpdateStripe);
-            RemoveStripeCommand = new RelayCommand<StripeItemVM>(RemoveStripe);
-            SelectStripeCommand = new RelayCommand<StripeItemVM>(SelectStripe);
+            ExportCurrentBibCommand = new ExportCurrentBibCommand(this);
+            ExportAllBibsCommand = new ExportAllBibsCommand(this);
+            AddStripeCommand = new AddStripeCommand(this);
+            UpdateStripeCommand = new UpdateStripeCommand(this);
+            RemoveStripeCommand = new RemoveStripeCommand(this);
+            SelectStripeCommand = new SelectStripeCommand(this);
+            NewBibProjectCommand = new NewBibProjectCommand(this);
+            OpenBibProjectCommand = new OpenBibProjectCommand(this);
+            SaveBibProjectAsCommand = new SaveBibProjectAsCommand(this);
+            SaveBibProjectCommand = new SaveBibProjectCommand(this);
+            CloseBibProjectCommand = new CloseBibProjectCommand(this);
+            ExitCommand = new ExitCommand(this);
         }
 
         private void BibEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
@@ -147,7 +180,7 @@ namespace BibGen.App.Viewmodel
         {
             if (e.PropertyName != nameof(FileBrowserVM.FilePathContent))
                 return;
-            
+
             var fileBrowserViewModel = (FileBrowserVM)sender;
 
             if (!File.Exists(fileBrowserViewModel.FilePathContent))
@@ -179,87 +212,5 @@ namespace BibGen.App.Viewmodel
                 !string.IsNullOrEmpty(BackgroundImageVM.FilePathContent) &&
                 !string.IsNullOrEmpty(OutputFolderVM.FolderPathContent) &&
                 StripeItems.Count > 0;
-
-        public void AddStripe(StripePropertiesVM stripeProps) =>
-            StripeItems.Add(new StripeItemVM
-            {
-                FontName = stripeProps.SelectedFont.ToString(),
-                FontSize = stripeProps.FontSize,
-                Color = stripeProps.Color,
-                Baseline = stripeProps.Baseline,
-                ExcelColumnName = stripeProps.ExcelColumnName
-            });
-
-        public void UpdateStripe(StripePropertiesVM stripeProps)
-        {
-            if (SelectedStripeItem == null)
-                return;
-
-            SelectedStripeItem.FontName = stripeProps.SelectedFont.ToString();
-            SelectedStripeItem.FontSize = stripeProps.FontSize;
-            SelectedStripeItem.Color = stripeProps.Color;
-            SelectedStripeItem.Baseline = stripeProps.Baseline;
-            SelectedStripeItem.ExcelColumnName = stripeProps.ExcelColumnName;
-        }
-
-        public void RemoveStripe(StripeItemVM stripeItem) =>
-            StripeItems.Remove(stripeItem);
-
-        public void SelectStripe(StripeItemVM stripeItem)
-        {
-            if (stripeItem == null)
-                return;
-
-            SelectedStripeItem = stripeItem;
-
-            foreach (var eachStripeItem in StripeItems)
-            {
-                eachStripeItem.IsSelected =
-                    stripeItem == eachStripeItem;
-            }
-
-            StripePropertiesVM.FontSize = stripeItem.FontSize;
-            StripePropertiesVM.Baseline = stripeItem.Baseline;
-            StripePropertiesVM.ExcelColumnName = stripeItem.ExcelColumnName;
-            StripePropertiesVM.Color = stripeItem.Color;
-
-            var selectedFontItem = StripePropertiesVM.FontItems.FirstOrDefault(x => x.ToString() == stripeItem.FontName);
-            StripePropertiesVM.SelectedFont = selectedFontItem;
-        }
-
-        public void ExportCurrentBib() =>
-            StartExportPipeline(PaginationVM.CurrentItem);
-
-        public void ExportAllBibs() =>
-            StartExportPipeline();
-
-        private void StartExportPipeline(int? exportBibAt = null)
-        {
-            var pipeline = new BibPipeline(new BibDataLoader(), new BibImageGenerator(), new PdfGenerator());
-
-            var stripeItems = StripeItems.Select(s => new BibLineDescriptor
-            {
-                FontName = s.FontName,
-                FontSize = s.FontSize,
-                Color = s.Color.ToString(),
-                Baseline = (float)s.Baseline,
-                ExcelColumnName = s.ExcelColumnName
-            }).ToList();
-
-            pipeline.GenerateBibs(new BibGenContext
-            {
-                ExcelFilePath = ExcelFilePathVM.FilePathContent,
-                BackgroundFilePath = BackgroundImageVM.FilePathContent,
-                OutputFilePath = OutputFolderVM.FolderPathContent,
-                LineDescriptors = stripeItems,
-                ExportBibAt = exportBibAt
-            });
-
-            MessageBox.Show(
-                "Export completed", 
-                "Export", 
-                MessageBoxButton.OK, 
-                MessageBoxImage.Information);
-        }
     }
 }

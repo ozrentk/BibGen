@@ -31,9 +31,9 @@ namespace BibGen.Services
             int count = 0;
             //var numberedEntries = entries.Where(e => e.Number != 0).ToList();
             //int total = numberedEntries.Count;
-            var filteredEntries = 
-                context.ExportBibAt.HasValue ? 
-                    entries.Skip(context.ExportBibAt.Value).Take(1) : 
+            var filteredEntries =
+                context.ExportBibAt.HasValue ?
+                    entries.Skip(context.ExportBibAt.Value).Take(1) :
                     entries;
             foreach (var entry in filteredEntries)
             {

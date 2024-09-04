@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="BIB Generator" 
         Height="650" 
-        Width="1210">
+        Width="1210" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowVM />
     </Window.DataContext>
@@ -18,10 +18,61 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Menu Grid.Row="0"
+              VerticalAlignment="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Bib Project"
+                          Command="{Binding NewBibProjectCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
+                <MenuItem Header="Open Bib Project"
+                          Command="{Binding OpenBibProjectCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
+                <MenuItem Header="Import">
+                    <MenuItem Header="Import Excel Data" />
+                    <MenuItem Header="Import Background Image" />
+                </MenuItem>
+                <MenuItem Header="Export">
+                    <MenuItem Header="Set Export Folder" />
+                    <MenuItem Header="Export Current Bib"
+                              Command="{Binding ExportCurrentBibCommand}" />
+                    <MenuItem Header="Export All Bibs"
+                              Command="{Binding ExportAllBibsCommand}" />
+                </MenuItem>
+                <MenuItem Header="Close Bib Project"
+                          Command="{Binding CloseBibProjectCommand}"
+                          CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
+                <Separator />
+                <MenuItem Header="Save As..."
+                          Command="{Binding SaveBibProjectAsCommand}" />
+                <MenuItem Header="Save Bib Project" 
+                          Command="{Binding SaveBibProjectCommand}" />
+                <Separator />
+                <MenuItem Header="Exit" 
+                          Command="{Binding ExitCommand}" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Header="Show Dataset" />
+                <MenuItem Header="Show Stripes" />
+                <MenuItem Header="Show Plates" />
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Add Stripe" />
+                <MenuItem Header="Delete Stripe" />
+                <MenuItem Header="Clear Stripes" />
+                <Separator />
+                <MenuItem Header="Add Plate" />
+                <MenuItem Header="Delete Plate" />
+                <MenuItem Header="Clear Plates" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" />
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="300" />
@@ -86,7 +137,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <StatusBar Grid.Row="1"
+        <StatusBar Grid.Row="2"
                    Height="25">
             <StatusBarItem>
                 <TextBlock Text="{Binding StatusMessage}" />

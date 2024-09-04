@@ -1,14 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System.Windows.Input;
 
 namespace BibGen.App.Viewmodel
 {
     public partial class PaginationVM : ObservableObject
     {
+        [JsonIgnore]
         public ICommand FirstPageCommand { get; set; }
+        [JsonIgnore]
         public ICommand PreviousPageCommand { get; set; }
+        [JsonIgnore]
         public ICommand NextPageCommand { get; set; }
+        [JsonIgnore]
         public ICommand LastPageCommand { get; set; }
 
         [ObservableProperty]
