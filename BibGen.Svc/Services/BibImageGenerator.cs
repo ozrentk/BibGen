@@ -7,8 +7,8 @@ namespace BibGen.Services
     {
         SKBitmap GenerateBibImage(
             BibEntry entry,
-            SKBitmap background,
-            List<BibLineDescriptor> lineDescriptors);
+            List<BibLineDescriptor> lineDescriptors,
+            SKBitmap background);
     }
 
     public class BibImageGenerator : IBibImageGenerator
@@ -19,8 +19,8 @@ namespace BibGen.Services
 
         public SKBitmap GenerateBibImage(
             BibEntry bibEntry,
-            SKBitmap background,
-            List<BibLineDescriptor> lineDescriptors)
+            List<BibLineDescriptor> lineDescriptors,
+            SKBitmap background)
         {
             var bgCopy = background.Copy();
             var canvas = new SKCanvas(bgCopy);
@@ -29,19 +29,27 @@ namespace BibGen.Services
             {
                 var lineDescriptor = lineDescriptors[i];
 
+                // Get linetext
                 bibEntry.DataItems.TryGetValue(lineDescriptor.ExcelColumnName, out string lineText);
 
+                // TODO: add option to import custom font 
+                // Get typeface
                 //var typeface = SKTypeface.FromFile(lineDescriptor.FontName);
                 var typeface = SKTypeface.FromFamilyName(lineDescriptor.FontName);
 
+                // Calculate wished font height in pixels
+                var wishedHeightPx = bgCopy.Height * (lineDescriptor.FontSize / 100F);
+
+                // Get paint with number, also width and height in pixels
                 var linePaint = MakeSkPaint(
                     lineText,
                     typeface,
-                    lineDescriptor.FontSize,
+                    wishedHeightPx,
                     lineDescriptor.Color,
                     out float probeWidthPx,
                     out float probeHeightPx);
 
+                // Check whether we need to narrow the caption
                 var ratio = probeWidthPx / (bgCopy.Width * 0.9F);
                 if (ratio > 1)
                 {
@@ -49,7 +57,7 @@ namespace BibGen.Services
                     linePaint = MakeSkPaint(
                         lineText,
                         typeface,
-                        lineDescriptor.FontSize / ratio,
+                        wishedHeightPx / ratio,
                         lineDescriptor.Color,
                         out probeWidthPx,
                         out probeHeightPx);
