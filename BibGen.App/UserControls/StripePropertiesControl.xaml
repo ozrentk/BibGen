@@ -48,8 +48,8 @@
                 <xctk:DecimalUpDown Grid.Row="0" 
                                     Grid.Column="1" 
                                     Margin="5"
-                                    Minimum="0"
-                                    Maximum="1"
+                                    Minimum="-0.5"
+                                    Maximum="1.5"
                                     Increment="0.01"
                                     Value="{Binding Baseline}"
                                     FormatString="P"/>

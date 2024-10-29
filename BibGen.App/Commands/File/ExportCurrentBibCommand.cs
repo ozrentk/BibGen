@@ -24,7 +24,7 @@ namespace BibGen.App.Commands.File
 
         public void Execute(object parameter)
         {
-            var stripeItems = _viewModel.StripeItems.Select(s => new BibLineDescriptor
+            var descriptors = _viewModel.StripeItems.Select(s => new BibLineDescriptor
             {
                 FontName = s.FontName,
                 FontSize = s.FontSize,
@@ -37,7 +37,7 @@ namespace BibGen.App.Commands.File
                 _viewModel.ExcelFilePathVM.FilePathContent,
                 _viewModel.BackgroundImageVM.FilePathContent,
                 _viewModel.OutputFolderVM.FolderPathContent,
-                stripeItems,
+                descriptors,
                 _viewModel.PaginationVM.CurrentItem);
         }
     }

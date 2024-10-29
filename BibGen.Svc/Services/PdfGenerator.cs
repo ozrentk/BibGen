@@ -18,8 +18,10 @@ namespace BibGen.Services
             foreach (var image in images)
             {
                 var page = document.AddPage();
-                page.Width = image.Width;
-                page.Height = image.Height;
+                page.Width = "210mm";
+                page.Height = "148mm";
+                //page.Width = image.Width;
+                //page.Height = image.Height;
                 var gfx = XGraphics.FromPdfPage(page);
                 using (var ms = new MemoryStream())
                 {

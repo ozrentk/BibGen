@@ -40,14 +40,23 @@ namespace BibGen.Services
                 //if (entry.Number == 0)
                 //    continue;
 
-                var image = _imageGenerator.GenerateBibImage(entry, background, context.LineDescriptors);
-                var images = new List<SKBitmap> { image };
+                try
+                {
+                    // Single image
+                    var image = _imageGenerator.GenerateBibImage(entry, context.LineDescriptors, background);
+                    var images = new List<SKBitmap> { image };
 
-                var filePath = Path.Combine(context.OutputFilePath, $"bib-{count}.pdf");
-                _pdfGenerator.GeneratePdf(images, filePath);
+                    // Single PDF file per iteration
+                    var filePath = Path.Combine(context.OutputFilePath, $"bib-{count}.pdf");
+                    _pdfGenerator.GeneratePdf(images, filePath);
 
-                count++;
-                Console.WriteLine($"Entry {count} of {entries.Count} processed.");
+                    count++;
+                    Console.WriteLine($"Entry {count} of {entries.Count} processed.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Problem with processing entry {count}: {ex.Message}");
+                }
             }
         }
     }

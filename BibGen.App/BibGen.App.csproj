@@ -1,36 +1,62 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+		<PackageIcon>icon112.png</PackageIcon>
+		<ApplicationIcon>icon112.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Images\q.jpeg" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="UserControls\PreviewOverlayControl.xaml.cs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BibGen.Svc\BibGen.Svc.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Images\q.jpeg" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Images\q.jpeg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
+	<ItemGroup>
+	  <Page Remove="UserControls\PreviewOverlayControl.xaml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ExcelFiles\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Content Include="icon112.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BibGen.Svc\BibGen.Svc.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Include="Images\q.jpeg">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="ExcelFiles\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\icon112.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.122" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="SkiaSharp.Views" Version="2.88.8" />
+	</ItemGroup>
 
 </Project>

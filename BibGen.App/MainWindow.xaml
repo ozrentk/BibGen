@@ -85,14 +85,9 @@
                 <Border Grid.Row="0"
                         BorderBrush="Black"
                         BorderThickness="1">
-                    <!--<Image x:Name="BibBackgroundImage"
-                           Source="{Binding Path=BackgroundImageVM.FilePathContent}" 
-                           Stretch="Uniform"/>-->
-                </Border>
-                <Border Grid.Row="0"
-                        BorderBrush="Transparent"
-                        BorderThickness="1">
-                    <uc:PreviewOverlayControl DataContext="{Binding}"/>
+                    <Image x:Name="BibBackgroundImage"
+                           Source="{Binding Path=PreviewImage}" 
+                           Stretch="Uniform"/>
                 </Border>
                 <uc:PaginationControl Grid.Row="1"
                                       DataContext="{Binding PaginationVM}"/>

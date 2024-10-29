@@ -17,9 +17,7 @@ namespace BibGen.App.Viewmodel
 
         [ObservableProperty]
         private ObservableCollection<int> _fontSizes =
-            new ObservableCollection<int> { 6, 7, 8, 9, 10, 11, 12, 14, 16, 18,
-                        20, 22, 24, 26, 28, 36, 48, 60, 72, 84, 96, 120,
-                        144, 168, 192, 216, 264, 312, 360, 408, 456, 552 };
+            new ObservableCollection<int> { 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150 };
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(MandatoryPropertiesSelected))]

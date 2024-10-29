@@ -4,16 +4,20 @@ using BibGen.Services;
 using BibGen.Svc.Model;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using SkiaSharp;
+using SkiaSharp.Views.WPF;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace BibGen.App.Viewmodel
 {
     public partial class MainWindowVM : ObservableObject
     {
-        public readonly BibDataLoader _bibDataLoader;
+        private readonly BibDataLoader _bibDataLoader;
+        private readonly BibImageGenerator _bibImageGenerator;
 
         #region Commands
         [JsonIgnore]
@@ -95,11 +99,17 @@ namespace BibGen.App.Viewmodel
 
         [ObservableProperty]
         private string _savedAsFilePath;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(BackgroundImageVM))]
+        private ImageSource _previewImage;
+
         #endregion Observables
 
         public MainWindowVM()
         {
             _bibDataLoader = new(); // TODO: use DI container
+            _bibImageGenerator = new(); // TODO: use DI container
 
             ExcelFilePathVM = new FileBrowserVM
             {
@@ -135,6 +145,9 @@ namespace BibGen.App.Viewmodel
             _bibEntries.CollectionChanged += BibEntries_CollectionChanged;
             _excelFilePathVM.PropertyChanged += ExcelFilePathVM_PropertyChanged;
             _stripeItems.CollectionChanged += StripeItems_CollectionChanged;
+            SubscribeToStripeItemPropertyChanged(_stripeItems);
+            _backgroundImageVM.PropertyChanged += BackgroundImageVM_PropertyChanged;
+            _paginationVM.PropertyChanged += PaginationVM_PropertyChanged;
 
             ExportCurrentBibCommand = new ExportCurrentBibCommand(this);
             ExportAllBibsCommand = new ExportAllBibsCommand(this);
@@ -150,18 +163,55 @@ namespace BibGen.App.Viewmodel
             ExitCommand = new ExitCommand(this);
         }
 
+        private void SubscribeToStripeItemPropertyChanged(IEnumerable<StripeItemVM> items)
+        {
+            foreach (var item in items)
+            {
+                item.PropertyChanged += StripeItem_PropertyChanged;
+            }
+        }
+        private void StripeItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (StripeItemVM newItem in e.NewItems)
+                {
+                    newItem.PropertyChanged += StripeItem_PropertyChanged;
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (StripeItemVM oldItem in e.OldItems)
+                {
+                    oldItem.PropertyChanged -= StripeItem_PropertyChanged;
+                }
+            }
+
+            UpdateIsExportAllowedFlag();
+        }
+
+        private void StripeItem_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(StripeItemVM.FontName) &&
+                e.PropertyName != nameof(StripeItemVM.FontSize) &&
+                e.PropertyName != nameof(StripeItemVM.Color) &&
+                e.PropertyName != nameof(StripeItemVM.Baseline) &&
+                e.PropertyName != nameof(StripeItemVM.ExcelColumnName))
+                return;
+
+            UpdatePreviewImageSource();
+        }
+
         private void BibEntries_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
             BibEntriesCount = _bibEntries.Count;
-
-        private void StripeItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
-            UpdateIsExportAllowedFlag();
 
         partial void OnSelectedStripeItemChanged(StripeItemVM value) =>
             IsStripeItemSelected = true;
 
         partial void OnBackgroundImageVMChanged(FileBrowserVM value) =>
             UpdateIsExportAllowedFlag();
-
+        
         partial void OnOutputFolderVMChanged(FolderBrowserVM value) =>
             UpdateIsExportAllowedFlag();
 
@@ -195,6 +245,49 @@ namespace BibGen.App.Viewmodel
             {
                 BibEntries.Add(bibEntry);
             }
+        }
+
+        private void BackgroundImageVM_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(BackgroundImageVM.FilePathContent))
+                return;
+
+            UpdatePreviewImageSource();
+        }
+
+        private void PaginationVM_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(PaginationVM.CurrentItem))
+                return;
+
+            UpdatePreviewImageSource();
+        }
+
+
+        private void UpdatePreviewImageSource()
+        {
+            if (BibEntries != null && !BibEntries.Any())
+                return;
+
+            if (BackgroundImageVM != null && string.IsNullOrWhiteSpace(BackgroundImageVM.FilePathContent))
+                return;
+
+            var itemIdx = PaginationVM.CurrentItem;
+            var bibEntry = BibEntries[itemIdx];
+
+            var background = SKBitmap.Decode(BackgroundImageVM.FilePathContent);
+            var descriptors = StripeItems.Select(s => new BibLineDescriptor
+            {
+                FontName = s.FontName,
+                FontSize = s.FontSize,
+                Color = s.Color.ToString(),
+                Baseline = (float)s.Baseline,
+                ExcelColumnName = s.ExcelColumnName
+            }).ToList();
+            var skImage = _bibImageGenerator.GenerateBibImage(bibEntry, descriptors, background);
+            var wBmp = skImage.ToWriteableBitmap();
+
+            PreviewImage = wBmp;
         }
 
         private void UpdateLoadedFlag() =>
